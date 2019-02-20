@@ -1,0 +1,17 @@
+/CMakeLists.txt.*
+/build
+/build-*
+/data/*
+/third_party
+
+# CLion
+/cmake-build-*
+/.idea
+
+# VS Code
+/.vscode
+
+# Eclipse
+.cproject
+.project
+.settings

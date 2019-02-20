@@ -1,0 +1,70 @@
+%YAML:1.0
+
+# sceneopt config
+# ---------------
+
+# input keyframes file
+keyframes: "./fusion/keyframes.txt"
+# input sdf
+input_sdf: "./fusion/volume_0.004.tsdf"
+
+# shading based refinement parameters
+# number of voxel grid pyramid levels
+num_grid_levels: "3"
+# rgb-d frame pyramid levels
+num_rgbd_levels: "3"
+# thin shell size factor (in voxel sizes)
+thin_shell_factor: "2.0"
+# thin shell size factor (in voxel sizes) for final grid level
+thin_shell_factor_final: "1.0"
+# subvolume size for SH coefficients (0.0=no subvolumes)
+subvolume_size_sh: "0.2"
+# subvolume SH estimation regularizer weight
+subvolume_sh_lamda_reg: "10.0"
+# clear voxels far from iso-surface
+clear_distant_voxels: "1"
+# occlusion checks distance (0.0=no occlusion checks)
+occlusion_distance: "0.02"
+# number of best observations by weight (0=all observations)
+num_observations: "5"
+# weight for gradient-based shading cost
+lambda_g: "0.2"
+# weight for volumetric regularization term
+lambda_r0: "160.0"
+lambda_r1: "20.0"
+# weight for surface stabilization regularization term
+lambda_s0: "120.0"
+lambda_s1: "10.0"
+# weight for albedo regularization term (-1.0 for constant albedo)
+lambda_a: "0.1"
+# solver iterations
+iterations: "10"
+# number of Levenberg-Marquardt steps
+lm_steps: "50"
+# fix camera poses in optimization
+fix_poses: "0"
+# fix camera intrinsics in optimization
+fix_intrinsics: "0"
+# fix distortion coefficients in optimization
+fix_distortion: "0"
+
+# output mesh prefix (.ply file)
+output_mesh_prefix: "./intrinsic3d/mesh"
+# output mesh visualization modes
+output_mesh_normals: "0"
+output_mesh_laplacian: "0"
+output_mesh_intensity: "0"
+output_mesh_intensity_grad: "0"
+output_mesh_albedo: "0"
+output_mesh_shading_sv: "0"
+output_mesh_shading_sv_const: "0"
+output_mesh_chromacity: "0"
+output_mesh_subvolumes: "0"
+output_mesh_subvolumes_interpolated: "0"
+# keep only largest component of output mesh (0=keep original mesh, 1=largest comp only)
+output_mesh_largest_comp_only: "1"
+# output poses prefix
+output_poses_prefix: "./intrinsic3d/poses"
+# output camera intrinsics prefix
+output_intrinsics_prefix: "./intrinsic3d/intrinsics"
+

@@ -1,0 +1,35 @@
+%YAML:1.0
+
+# sdf fusion config
+# -----------------
+
+# keyframes file (empty=fuse all frames, otherwise fuse only keyframes)
+#keyframes: "./fusion/keyframes.txt"
+keyframes: ""
+
+# voxel size (in meter)
+voxel_size: "0.004"
+# window size for discarding depth values 
+# close to depth discontinuities (in pixels)
+discont_window_size: "2"
+
+# clip sdf volume after fusion (absolute bounds, in meter)
+# (set all coordinates to 0.0 to disable clipping)
+# left
+clip_x0: "-0.1"
+# right
+clip_x1: "1.86"
+# top
+clip_y0: "-0.6"
+# bottom
+clip_y1: "0.32"
+# front
+clip_z0: "0.0"
+# back
+clip_z1: "2.0"
+
+# output mesh (.ply file) (empty=disabled)
+output_mesh: "./fusion/mesh_0.004.ply"
+# output sdf (empty=disabled)
+output_sdf: "./fusion/volume_0.004.tsdf"
+

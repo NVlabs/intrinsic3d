@@ -1,0 +1,12 @@
+%YAML:1.0
+
+# keyframe selection config
+# -------------------------
+
+# size of fixed window for keyframe selection
+window_size: "20"
+# filename for loading/saving keyframe scores
+filename: "./fusion/keyframes.txt"
+# show selected keyframes: 0=disabled, 1=enabled
+show_keyframes: "0"
+

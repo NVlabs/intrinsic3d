@@ -1,0 +1,13 @@
+%YAML:1.0
+
+# rgbd sensor config
+# ------------------
+
+# dataset file/folder 
+dataset: "./rgbd/"
+# number of frames to load; 0=all frames
+max_frames: "0"
+# minimum depth
+min_depth: "0.1"
+# maximum depth
+max_depth: "2.0"
