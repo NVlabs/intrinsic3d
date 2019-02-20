@@ -76,17 +76,10 @@ namespace nv
         // <app>
         //       -s "<path>/sensor.yml"
         //       -i "<path>/intrinsic3d.yml"
-#if CV_MAJOR_VERSION == 2
-        const char *keys = {
-            "{s|sensor| |sensor config file}"
-            "{i|intrinsic3d| |intrinsic3d config file}"
-        };
-#elif CV_MAJOR_VERSION == 3
         const char *keys = {
             "{s sensor| |sensor config file}"
             "{i intrinsic3d| |intrinsic3d config file}"
         };
-#endif
 		cv::CommandLineParser cmd(argc, argv, keys);
         const std::string sensor_cfg_file = cmd.get<std::string>("sensor");
         const std::string intrinsic3d_cfg_file = cmd.get<std::string>("intrinsic3d");

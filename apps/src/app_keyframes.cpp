@@ -62,17 +62,10 @@ namespace nv
         // <app>
         //       -s "<path>/sensor.yml"
         //       -k "<path>/keyframes.yml"
-#if CV_MAJOR_VERSION == 2
-        const char *keys = {
-            "{s|sensor| |sensor config file}"
-            "{k|keyframes| |keyframes selection config file}"
-        };
-#elif CV_MAJOR_VERSION == 3
         const char *keys = {
             "{s sensor| |sensor config file}"
             "{k keyframes| |keyframes selection config file}"
         };
-#endif
 		cv::CommandLineParser cmd(argc, argv, keys);
         const std::string sensor_cfg_file = cmd.get<std::string>("sensor");
         const std::string keyframes_cfg_file = cmd.get<std::string>("keyframes");

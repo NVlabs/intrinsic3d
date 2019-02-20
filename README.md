@@ -54,7 +54,7 @@ git clone https://github.com/NVlabs/intrinsic3d.git
 Building Intrinsic3D requires
 [CMake](https://cmake.org/download/),
 [Eigen](http://eigen.tuxfamily.org/),
-[OpenCV](http://opencv.org/downloads.html),
+[OpenCV 3](https://opencv.org/releases.html),
 [Boost](http://www.boost.org/users/download/) and
 [Ceres Solver](http://ceres-solver.org/) (with [CXSparse](https://github.com/TheFrenchLeaf/CXSparse) on Windows)
 as third-party libraries.
@@ -124,7 +124,7 @@ The outputs will be generated in the subfolders ```fusion/``` and  ```intrinsic3
 ### Keyframe Selection
 We first run the keyframe selection to discard blurry frames, based on a single-frame blurriness measure:
 ```
-../../build/bin/AppKeyframes -s sensor.yml -k keyframes.yml
+../../build/bin/AppKeyframes -s=sensor.yml -k=keyframes.yml
 ```
 This will generate the keyframes file ```fusion/keyframes.txt```.
 The window size for keyframe selection can be adjusted through the parameter ```window_size``` in the ```keyframes.yml``` configuration file.
@@ -134,7 +134,7 @@ Next, the RGB-D input frames are fused in a voxel-hashed signed distance field, 
 ```fusion/volume_0.004.tsdf```:
 
 ```
-../../build/bin/AppFusion -s sensor.yml -f fusion.yml
+../../build/bin/AppFusion -s=sensor.yml -f=fusion.yml
 ```
 Since the framework is very computationally demanding, it is recommended to crop the 3D reconstruction already during the SDF fusion process.
 You can therefore specify the 3D clip coordinates (in absolute coordinates of the first camera frame) by setting the ```crop_*``` parameters in the ```fusion.yml``` configuration file. 
@@ -146,7 +146,7 @@ To accelerate finding a suitable clip volume, increase the ```voxel_size``` valu
 The Intrinsic3D approach takes the initial SDF volume (```fusion/volume_0.004.tsdf```) and selected keyframes (```fusion/keyframes.txt```) and jointly optimizes the scene geometry and appearance along with the involved image formation model:
 
 ```
-../../build/bin/AppIntrinsic3D -s sensor.yml -i intrinsic3d.yml
+../../build/bin/AppIntrinsic3D -s=sensor.yml -i=intrinsic3d.yml
 ```
 
 The output is generated in the subfolder ```intrinsic3d/```, with the final refined 3D mesh stored as ```mesh_g0_p0.ply```. The refined camera poses and color camera intrinsics are stored as ```poses_g0_p0.txt``` and ```intrinsics_g0_p0.txt``` respectively.

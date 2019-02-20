@@ -68,17 +68,10 @@ namespace nv
         // <app>
         //       -s "<path>/sensor.yml"
         //       -f "<path>/fusion.yml"
-#if CV_MAJOR_VERSION == 2
-        const char *keys = {
-            "{s|sensor| |sensor config file}"
-            "{f|fusion| |fusion config file}"
-        };
-#elif CV_MAJOR_VERSION == 3
         const char *keys = {
             "{s sensor| |sensor config file}"
             "{f fusion| |fusion config file}"
         };
-#endif
 		cv::CommandLineParser cmd(argc, argv, keys);
         std::string sensor_cfg_file = cmd.get<std::string>("sensor");
         std::string fusion_cfg_file = cmd.get<std::string>("fusion");
