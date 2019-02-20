@@ -2,7 +2,7 @@
 
 ## High-Quality 3D Reconstruction by Joint Appearance and Geometry Optimization with Spatially-Varying Lighting (ICCV 2017)
 
-[![Intrinsic3D](https://vision.in.tum.de/_media/data/datasets/intrinsic3d/maier2017intrinsic3d_teaser.jpg?w=700)](https://vision.in.tum.de/_media/spezial/bib/maier2017intrinsic3d.pdf)
+[![Intrinsic3D](https://vision.in.tum.de/_media/data/datasets/intrinsic3d/maier2017intrinsic3d_teaser.jpg?w=700&tok=b8e6f7)](https://vision.in.tum.de/_media/spezial/bib/maier2017intrinsic3d.pdf)
 
 ### License ###
 Copyright (c) 2019, NVIDIA Corporation and Technical University of Munich. All Rights Reserved.
