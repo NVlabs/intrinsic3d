@@ -58,18 +58,18 @@ namespace nv
 		{
 			ProblemInfo();
 
-			int iteration;
+            size_t iteration;
 			size_t residuals;
 			size_t parameters;
 			double cost;
-            int residual_types;
+            size_t residual_types;
             std::vector<size_t> type_residuals;
             std::vector<double> type_costs;
             std::vector<double> type_weights;
             double time_add;
             double time_build;
 
-            std::string toString(bool print_cost_types = true) const;
+            std::string toString(bool print_costs = true) const;
 		};
 
 
@@ -77,11 +77,11 @@ namespace nv
 		{
 			SolverInfo();
 
-			int iteration;
+            size_t iteration;
 			double cost;
             double cost_final;
             double cost_change;
-            int inner_iterations;
+            size_t inner_iterations;
             double trust_region_radius;
 			std::string report;
             double time_solve;
@@ -93,12 +93,12 @@ namespace nv
 		NLSSolver();
 		~NLSSolver();
 
-        bool reset(int num_cost_types = 1);
+        bool reset(size_t num_cost_types = 1);
 
 		bool addResidual(VoxelResidual &residual);
-        bool addResidual(int cost_type, const VoxelResidual &residual);
-        void setCostWeight(int cost_type, double weight);
-        double costWeight(int cost_type);
+        bool addResidual(size_t cost_id, const VoxelResidual &residual);
+        void setCostWeight(size_t cost_id, double weight);
+        double costWeight(size_t cost_id);
 
         void setDebug(bool debug);
 
@@ -112,7 +112,7 @@ namespace nv
 
 		void removeInvalidResiduals();
 
-        int num_cost_types_;
+        size_t num_cost_types_;
 		ceres::Problem* problem_;
 		std::vector< std::vector<VoxelResidual> > residuals_;
         std::vector<double> cost_type_weights_;
@@ -121,6 +121,7 @@ namespace nv
         std::vector<SolverInfo> solver_info_;
 		Timer tmr_;
         bool debug_;
+        bool calculate_type_costs_;
 	};
 
 } // namespace nv

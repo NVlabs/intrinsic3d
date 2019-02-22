@@ -198,8 +198,10 @@ namespace nv
 
         // create gradient-based shading cost Eg (data term)
         // collect voxel observations
-        std::vector<VertexObservation> observations = colorization.collectObservations(
-                    image_formation.poses, image_formation.rgbd_pyr, v_pos, n, pyr_lvl);
+        std::vector<VertexObservation> observations;
+        colorization.collectObservations(image_formation.poses, image_formation.rgbd_pyr,
+                                         v_pos, n, pyr_lvl,
+                                         observations);
 
         // reference SH coeffs for voxel
         const Eigen::VectorXd& sh_coeffs = data.voxel_sh_coeffs[voxel_idx];
@@ -238,7 +240,6 @@ namespace nv
             VoxelResidual rv = VolumetricRegularizer::create(data.grid, v_pos);
 			if (rv.weight > 0.0)
 			{
-				//rv.weight *= weightSignedDistInv;
 				solver.addResidual(1, rv);
 			}
 		}
@@ -249,7 +250,6 @@ namespace nv
             VoxelResidual rs = SurfaceStabRegularizer::create(data.grid, v_pos);
 			if (rs.weight > 0.0)
 			{
-				//rs.weight *= weightSignedDistInv;
 				solver.addResidual(2, rs);
 			}
 		}

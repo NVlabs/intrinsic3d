@@ -112,9 +112,10 @@ namespace nv
         bool add(int id, const cv::Mat &depth, const cv::Mat &color, const Mat4f &pose_world_to_cam);
         bool compute();
 
-        std::vector<VertexObservation> collectObservations(const std::vector<Vec6> &poses,
-                                                              std::vector<Pyramid> &frames_pyr,
-                                                              const Vec3i &v_pos, const Vec3f &n, int pyr_lvl) const;
+        void collectObservations(const std::vector<Vec6> &poses,
+                                 std::vector<Pyramid> &frames_pyr,
+                                 const Vec3i &v_pos, const Vec3f &n, int pyr_lvl,
+                                 std::vector<VertexObservation> &voxel_observations) const;
 
         VertexObservation computeObservation(const Vec3i &v_pos, const Vec3f &normal,
                                             const Mat4f &pose_world_to_cam, const cv::Mat &color,

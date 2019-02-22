@@ -42,7 +42,7 @@ PROJECT(Intrinsic3D C CXX)
 # CMake configuration
 IF(NOT CMAKE_BUILD_TYPE)
     # CMAKE_BUILD_TYPE: RelWithDebInfo, Release or Debug
-    SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+    SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
 
 # CMake paths
@@ -95,16 +95,8 @@ ENDIF()
 
 # ------------------------------------------------------------------------
 # C++ flags
-IF(NOT (WIN32 AND MSVC))
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -funroll-loops -pthread")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-variable -Wno-unused-parameter")
-ENDIF()
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FORCE_INLINES")
-
-# ------------------------------------------------------------------------
-# Visual Studio preprocessor defines etc
 IF(WIN32 AND MSVC)
+    # Visual Studio preprocessor defines etc
     # on Windows, use OpenCV release libs also in RelWithDebInfo mode (to avoid crashes)
     SET_TARGET_PROPERTIES(${OpenCV_LIBS} PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
     # set required preprocessor defines
@@ -113,7 +105,13 @@ IF(WIN32 AND MSVC)
     ADD_DEFINITIONS(-D_WINDOWS)
     # activate C++ exception handling in MSVC
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+ELSE()
+    # flags for GCC etc
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -funroll-loops -pthread")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-variable -Wno-unused-parameter")
 ENDIF()
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FORCE_INLINES")
 
 # ------------------------------------------------------------------------
 # Intrinsic3D library

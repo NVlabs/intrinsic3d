@@ -54,17 +54,19 @@ namespace nv
 	}
 
 
-    std::string NLSSolver::ProblemInfo::toString(bool print_cost_types) const
+    std::string NLSSolver::ProblemInfo::toString(bool print_costs) const
 	{
 		std::stringstream ss;
-		ss << "iteration " << iteration << " problem: " << 
-					residuals << " residuals, " <<
-					parameters << " parameters, " <<
-					"cost " << cost << ", " <<
-					"time_add " << time_add << ", " <<
-					"time_build " << time_build;
+        ss <<   "iteration " << iteration << " problem: " <<
+                residuals << " residuals, " <<
+                parameters << " parameters, ";
+        if (print_costs)
+            ss << "cost " << cost << ", ";
 
-        if (print_cost_types)
+        ss <<   "time_add " << time_add << ", " <<
+                "time_build " << time_build;
+
+        if (print_costs)
 		{
 			for (size_t i = 0; i < type_residuals.size(); ++i)
 			{
@@ -104,7 +106,8 @@ namespace nv
 	NLSSolver::NLSSolver() :
 		num_cost_types_(1),
         problem_(nullptr),
-        debug_(false)
+        debug_(false),
+        calculate_type_costs_(false)
 	{
 		reset(num_cost_types_);
 	}
@@ -116,7 +119,7 @@ namespace nv
 	}
 
 
-    bool NLSSolver::reset(int num_cost_types)
+    bool NLSSolver::reset(size_t num_cost_types)
 	{
         if (num_cost_types <= 0)
 			return false;
@@ -138,19 +141,19 @@ namespace nv
 	}
 
 
-    void NLSSolver::setCostWeight(int cost_type, double weight)
+    void NLSSolver::setCostWeight(size_t cost_id, double weight)
 	{
-        if (cost_type < 0 || cost_type >= cost_type_weights_.size())
+        if (cost_id >= cost_type_weights_.size())
 			return;
-        cost_type_weights_[cost_type] = weight;
+        cost_type_weights_[cost_id] = weight;
 	}
 
 
-    double NLSSolver::costWeight(int cost_type)
+    double NLSSolver::costWeight(size_t cost_id)
 	{
-        if (cost_type < 0 || cost_type >= cost_type_weights_.size())
+        if (cost_id >= cost_type_weights_.size())
 			return 0.0;
-        return cost_type_weights_[cost_type];
+        return cost_type_weights_[cost_id];
 	}
 
 
@@ -166,9 +169,9 @@ namespace nv
 	}
 
 
-    bool NLSSolver::addResidual(int cost_type, const VoxelResidual &residual)
+    bool NLSSolver::addResidual(size_t cost_id, const VoxelResidual &residual)
 	{
-        if (cost_type < 0 || cost_type >= cost_type_weights_.size())
+        if (cost_id >= cost_type_weights_.size())
 			return false;
 
 		if (!residual.cost || residual.weight == 0.0)
@@ -178,7 +181,7 @@ namespace nv
 		}
 		else
 		{
-            residuals_[cost_type].push_back(residual);
+            residuals_[cost_id].push_back(residual);
 			return true;
 		}
 	}
@@ -192,7 +195,7 @@ namespace nv
 		tmr_.start();
 		// problem info for iteration
 		ProblemInfo info;
-		info.iteration = (int)problem_info_.size();
+        info.iteration = problem_info_.size();
 		info.residual_types = num_cost_types_;
 		info.type_residuals.resize(num_cost_types_, 0);
 		info.type_costs.resize(num_cost_types_, 0.0);
@@ -214,51 +217,59 @@ namespace nv
 
 		// add residuals to problem
 		std::cout << "      add residuals to problem ..." << std::endl;
-		for (size_t j = 0; j < num_cost_types_; ++j)
+        for (size_t cost_id = 0; cost_id < num_cost_types_; ++cost_id)
 		{
-			info.type_residuals[j] = residuals_[j].size();
-            info.type_weights[j] = cost_type_weights[j];
+            auto& cur_cost_residuals = residuals_[cost_id];
+            info.type_residuals[cost_id] = cur_cost_residuals.size();
+            double cur_cost_weight = cost_type_weights[cost_id];
+            info.type_weights[cost_id] = cur_cost_weight;
 
 			// iterate over residual for current residual type
-			for (size_t i = 0; i < residuals_[j].size(); ++i)
+            for (size_t i = 0; i < cur_cost_residuals.size(); ++i)
 			{
-				VoxelResidual r = residuals_[j][i];
+                VoxelResidual& r = cur_cost_residuals[i];
 
 				// apply cost term weight
-                r.weight *= cost_type_weights[j];
+                r.weight *= cur_cost_weight;
 				// loss for gradient-based shading cost
                 ceres::LossFunction* loss = new ceres::ScaledLoss(nullptr, r.weight, ceres::TAKE_OWNERSHIP);
 
 				// add residual
 				problem_->AddResidualBlock(r.cost, loss, r.params);
 
-				// compute result cost
-				double residual = 0.0;
-				bool eval = r.cost->Evaluate(&(r.params[0]), &residual, 0);
-				if (eval && residual != NV_INVALID_RESIDUAL)
-				{
-					// compute squared cost after applying loss function
-                    double residuals_loss[3];
-                    loss->Evaluate(residual * residual, residuals_loss);
-                    info.type_costs[j] += residuals_loss[0];
-				}
+                if (calculate_type_costs_)
+                {
+                    // compute result cost
+                    double residual = 0.0;
+                    bool eval = r.cost->Evaluate(&(r.params[0]), &residual, nullptr);
+                    if (eval && residual != NV_INVALID_RESIDUAL)
+                    {
+                        // compute squared cost after applying loss function
+                        double residuals_loss[3];
+                        loss->Evaluate(residual * residual, residuals_loss);
+                        info.type_costs[cost_id] += residuals_loss[0];
+                    }
+                }
+
+                // clear parameters to immediately reduce memory usage
+                r.params.clear();
 			}
 
 			// add cost for current residual type to overall cost
-			info.cost += 0.5 * info.type_costs[j];
+            info.cost += 0.5 * info.type_costs[cost_id];
 			// clear residuals for current residual type
-			residuals_[j].clear();
+            cur_cost_residuals.clear();
 		}
 		tmr_.stop();
 		info.time_build = tmr_.elapsed();
 
 		// number of residuals
-		info.residuals = problem_->NumResiduals();
+        info.residuals = static_cast<size_t>(problem_->NumResiduals());
 		// number of parameters
-		info.parameters = problem_->NumParameters();
+        info.parameters = static_cast<size_t>(problem_->NumParameters());
 		
 		// store problem info
-		std::cout << "      " << info.toString(true) << std::endl;
+        std::cout << "      " << info.toString(calculate_type_costs_) << std::endl;
 		problem_info_.push_back(info);
 
 		return true;
@@ -293,13 +304,14 @@ namespace nv
 			options.logging_type = ceres::LoggingType::SILENT;
 		// solve linear problem using sparse solver:
 		// conjugate gradients solver with jacobi preconditioner on normal equations
-		options.linear_solver_type = ceres::CGNR;
+        options.linear_solver_type = ceres::CGNR;
 
         // set number of local PCG iterations
         //int lin_solver_iterations = 10;
         //options.min_linear_solver_iterations = lin_solver_iterations;
         //options.max_linear_solver_iterations = lin_solver_iterations;
 
+        //options.sparse_linear_algebra_library_type = ceres::SUITE_SPARSE;
         //options.sparse_linear_algebra_library_type = ceres::CX_SPARSE;
 		//options.dense_linear_algebra_library_type = ceres::EIGEN;
 
@@ -338,11 +350,11 @@ namespace nv
 
 				// problem info for iteration
 				SolverInfo info;
-				info.iteration = (int)solver_info_.size();
+                info.iteration = solver_info_.size();
 				info.cost = summary.initial_cost;
 				info.cost_final = summary.final_cost;
 				info.cost_change = info.cost - info.cost_final;
-				info.inner_iterations = (int)summary.iterations.size();
+                info.inner_iterations = summary.iterations.size();
                 info.trust_region_radius = it_summary.trust_region_radius;
 				info.report = summary.FullReport();
                 info.time_solve = time_solve_problem;

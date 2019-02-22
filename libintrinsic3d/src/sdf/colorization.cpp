@@ -186,11 +186,13 @@ namespace nv
 	}
 
 
-    std::vector<VertexObservation> SDFColorization::collectObservations(const std::vector<Vec6> &poses, std::vector<Pyramid> &frames_pyr,
-                                                                           const Vec3i &v_pos, const Vec3f &n, int pyr_lvl) const
+    void SDFColorization::collectObservations(const std::vector<Vec6> &poses,
+                                              std::vector<Pyramid> &frames_pyr,
+                                              const Vec3i &v_pos, const Vec3f &n, int pyr_lvl,
+                                              std::vector<VertexObservation> &voxel_observations) const
     {
         size_t num_poses = poses.size();
-        std::vector<VertexObservation> voxel_observations(num_poses);
+        voxel_observations.resize(num_poses);
         for (size_t f_id = 0; f_id < num_poses; ++f_id)
         {
             // get voxel observation in view
@@ -198,14 +200,12 @@ namespace nv
             cv::Mat color = frames_pyr[f_id].color(pyr_lvl);
             cv::Mat depth = frames_pyr[f_id].depth(pyr_lvl);
             VertexObservation obs = computeObservation(v_pos, n, pose_world_to_camera, color, depth);
-            obs.frame = f_id;
+            obs.frame = static_cast<int>(f_id);
             voxel_observations[f_id] = obs;
         }
 
         // keep only best n observations
         SDFColorization::filter(voxel_observations, cfg_.max_num_observations);
-
-        return voxel_observations;
     }
 
 
@@ -215,7 +215,6 @@ namespace nv
     {
         VertexObservation obs;
 
-        const VoxelSBR& v = grid_->voxel(v_pos);
         bool valid = true;
 
         // transform point onto iso-surface
