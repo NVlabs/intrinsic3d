@@ -55,6 +55,31 @@ namespace nv
     }
 
 
+    void Intrinsic3D::Config::load(const Settings& cfg)
+    {
+        // number of sdf grid levels
+        num_grid_levels = cfg.get<int>("num_grid_levels");
+        // set thin shell size factor (in voxel sizes)
+        thres_shell_factor = cfg.get<double>("thin_shell_factor");
+        // set final thin shell size factor (in voxel sizes)
+        thres_shell_factor_final = cfg.get<double>("thin_shell_factor_final");
+        // clear voxels far from iso-surface
+        clear_distant_voxels = cfg.get<bool>("clear_distant_voxels");
+
+        // set RGB-D frame pyramid levels
+        num_rgbd_levels = cfg.get<int>("num_rgbd_levels");
+        // check for occlusions
+        occlusions_distance = cfg.get<float>("occlusion_distance");
+        // number of best observations by weight (0=all observations)
+        num_observations = cfg.get<size_t>("num_observations");
+
+        // subvolume size for SH coefficients
+        subvolume_size_sh = cfg.get<float>("subvolume_size_sh");
+        // subvolume SH estimation regularizer weight
+        sh_est_lambda_reg = cfg.get<double>("subvolume_sh_lamda_reg");
+    }
+
+
     void Intrinsic3D::Config::print() const
     {
         std::cout << "Intrinsic3D config:" << std::endl;

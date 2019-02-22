@@ -128,9 +128,10 @@ namespace nv
 
         // fill and print out config structs
         Intrinsic3D::Config i3d_cfg;
-        Optimizer::Config opt_cfg;
-        readConfig(i3d_cfg_, i3d_cfg, opt_cfg);
+        i3d_cfg.load(i3d_cfg_);
         i3d_cfg.print();
+        Optimizer::Config opt_cfg;
+        opt_cfg.load(i3d_cfg_);
         opt_cfg.print();
 
         // create refinement
@@ -153,52 +154,6 @@ namespace nv
 
 		return true;
 	}
-
-
-    void AppIntrinsic3D::readConfig(const Settings &cfg,
-                                    Intrinsic3D::Config &i3d_cfg,
-                                    Optimizer::Config &opt_cfg) const
-    {
-        // number of sdf grid levels
-        i3d_cfg.num_grid_levels = cfg.get<int>("num_grid_levels");
-        // set thin shell size factor (in voxel sizes)
-        i3d_cfg.thres_shell_factor = cfg.get<double>("thin_shell_factor");
-        // set final thin shell size factor (in voxel sizes)
-        i3d_cfg.thres_shell_factor_final = cfg.get<double>("thin_shell_factor_final");
-        // clear voxels far from iso-surface
-        i3d_cfg.clear_distant_voxels = cfg.get<bool>("clear_distant_voxels");
-
-        // set RGB-D frame pyramid levels
-        i3d_cfg.num_rgbd_levels = cfg.get<int>("num_rgbd_levels");
-        // check for occlusions
-        i3d_cfg.occlusions_distance = cfg.get<float>("occlusion_distance");
-        // number of best observations by weight (0=all observations)
-        i3d_cfg.num_observations = cfg.get<size_t>("num_observations");
-
-        // subvolume size for SH coefficients
-        i3d_cfg.subvolume_size_sh = cfg.get<float>("subvolume_size_sh");
-        // subvolume SH estimation regularizer weight
-        i3d_cfg.sh_est_lambda_reg = cfg.get<double>("subvolume_sh_lamda_reg");
-
-        // set number of outer iterations
-        opt_cfg.iterations = cfg.get<int>("iterations");
-        // set number of Levenberg-Marquardt iterations
-        opt_cfg.lm_steps = cfg.get<int>("lm_steps");
-        // weight for gradient-based shading cost
-        opt_cfg.lambda_g = cfg.get<double>("lambda_g");
-        // weight for volumetric regularization term
-        opt_cfg.lambda_r0 = cfg.get<double>("lambda_r0");
-        opt_cfg.lambda_r1 = cfg.get<double>("lambda_r1");
-        // weight for surface stabilization regularization term
-        opt_cfg.lambda_s0 = cfg.get<double>("lambda_s0");
-        opt_cfg.lambda_s1 = cfg.get<double>("lambda_s1");
-        // weight for albedo regularization term (-1.0 for constant albedo)
-        opt_cfg.lambda_a = cfg.get<double>("lambda_a");
-        // fix parameters
-        opt_cfg.fix_poses = cfg.get<bool>("fix_poses");
-        opt_cfg.fix_intrinsics = cfg.get<bool>("fix_intrinsics");
-        opt_cfg.fix_distortion = cfg.get<bool>("fix_distortion");
-    }
 
 
     void AppIntrinsic3D::onSDFRefined(const Intrinsic3D::RefinementInfo &info)

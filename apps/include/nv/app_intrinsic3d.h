@@ -60,11 +60,7 @@ namespace nv
 
         virtual void onSDFRefined(const Intrinsic3D::RefinementInfo &info);
 
-	private:
-        void readConfig(const Settings &cfg,
-                        Intrinsic3D::Config &i3d_cfg,
-                        Optimizer::Config &opt_cfg) const;
-
+    private:
         Settings i3d_cfg_;
         Sensor* sensor_;
         KeyframeSelection* keyframe_selection_;

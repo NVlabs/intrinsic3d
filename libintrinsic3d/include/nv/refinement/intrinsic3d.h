@@ -36,6 +36,8 @@
 #include <unordered_set>
 #include <vector>
 #include <opencv2/core.hpp>
+
+#include <nv/settings.h>
 #include <nv/refinement/optimizer.h>
 #include <nv/sdf/colorization.h>
 #include <nv/sparse_voxel_grid.h>
@@ -78,6 +80,8 @@ namespace nv
             // svsh estimation
             float subvolume_size_sh = 0.2f;
             double sh_est_lambda_reg = 10.0;
+
+            void load(const Settings& cfg);
 
             void print() const;
         };

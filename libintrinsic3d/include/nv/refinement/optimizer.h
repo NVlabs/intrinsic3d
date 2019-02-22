@@ -36,12 +36,14 @@
 #include <unordered_set>
 #include <vector>
 #include <opencv2/core.hpp>
+
+#include <nv/settings.h>
+#include <nv/sparse_voxel_grid.h>
 #include <nv/refinement/nls_solver.h>
 #include <nv/rgbd/pyramid.h>
 #include <nv/refinement/shading_cost.h>
 #include <nv/refinement/cost.h>
 #include <nv/sdf/colorization.h>
-#include <nv/sparse_voxel_grid.h>
 
 
 
@@ -75,6 +77,8 @@ namespace nv
             bool fix_poses = false;
             bool fix_intrinsics = false;
             bool fix_distortion = false;
+
+            void load(const Settings& cfg);
 
             void print() const;
         };

@@ -49,6 +49,29 @@
 namespace nv
 {
 
+    void Optimizer::Config::load(const Settings &cfg)
+    {
+        // set number of outer iterations
+        iterations = cfg.get<int>("iterations");
+        // set number of Levenberg-Marquardt iterations
+        lm_steps = cfg.get<int>("lm_steps");
+        // weight for gradient-based shading cost
+        lambda_g = cfg.get<double>("lambda_g");
+        // weight for volumetric regularization term
+        lambda_r0 = cfg.get<double>("lambda_r0");
+        lambda_r1 = cfg.get<double>("lambda_r1");
+        // weight for surface stabilization regularization term
+        lambda_s0 = cfg.get<double>("lambda_s0");
+        lambda_s1 = cfg.get<double>("lambda_s1");
+        // weight for albedo regularization term (-1.0 for constant albedo)
+        lambda_a = cfg.get<double>("lambda_a");
+        // fix parameters
+        fix_poses = cfg.get<bool>("fix_poses");
+        fix_intrinsics = cfg.get<bool>("fix_intrinsics");
+        fix_distortion = cfg.get<bool>("fix_distortion");
+    }
+
+
     void Optimizer::Config::print() const
     {
         std::cout << "Optimizer config:" << std::endl;
