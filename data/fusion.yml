@@ -16,13 +16,13 @@ discont_window_size: "2"
 # clip sdf volume after fusion (absolute bounds, in meter)
 # (set all coordinates to 0.0 to disable clipping)
 # left
-clip_x0: "-0.1"
+clip_x0: "-0.09"
 # right
-clip_x1: "1.86"
+clip_x1: "1.55"
 # top
-clip_y0: "-0.6"
+clip_y0: "-0.58"
 # bottom
-clip_y1: "0.32"
+clip_y1: "0.26"
 # front
 clip_z0: "0.0"
 # back
