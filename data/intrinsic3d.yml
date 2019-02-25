@@ -30,8 +30,8 @@ num_observations: "5"
 # weight for gradient-based shading cost
 lambda_g: "0.2"
 # weight for volumetric regularization term
-lambda_r0: "160.0"
-lambda_r1: "20.0"
+lambda_r0: "80.0"
+lambda_r1: "10.0"
 # weight for surface stabilization regularization term
 lambda_s0: "120.0"
 lambda_s1: "10.0"

@@ -130,7 +130,7 @@ This will generate the keyframes file ```fusion/keyframes.txt```.
 The window size for keyframe selection can be adjusted through the parameter ```window_size``` in the ```keyframes.yml``` configuration file.
 
 ### SDF Fusion
-Next, the RGB-D input frames are fused in a voxel-hashed signed distance field, which produces an output 3D triangle mesh ```fusion/mesh_0.004.ply``` and an initial SDF volume
+Next, the RGB-D input frames are fused in a voxel-hashed signed distance field (SDF), which produces an output 3D triangle mesh ```fusion/mesh_0.004.ply``` and an initial SDF volume
 ```fusion/volume_0.004.tsdf```:
 
 ```
@@ -140,7 +140,14 @@ Since the framework is very computationally demanding, it is recommended to crop
 You can therefore specify the 3D clip coordinates (in absolute coordinates of the first camera frame) by setting the ```crop_*``` parameters in the ```fusion.yml``` configuration file. 
 To disable clipping, you can set all ```crop_*``` parameters to 0.0.
 To accelerate finding a suitable clip volume, increase the ```voxel_size``` value and integrate keyframes only (by setting the parameter ```keyframes```).
-
+For reference, here are suitable crop bounds for the [Intrinsic3D Dataset](https://vision.in.tum.de/data/datasets/intrinsic3d) sequences: 
+```
+Lion: left -0.09, right 1.55; top -0.58, bottom 0.26; front 0.0, back 2.0.
+Gate: left -0.52, right 0.55; top -1.1, bottom 0.35; front 0.0, back 1.0.
+Hieroglyphics: left -0.5, right 0.45; top -1.2, bottom 0.2; front 0.0, back 1.0.
+Tomb Statuary: left -0.15, right 0.25; top -0.02, bottom 0.52; front 0.0, back 0.75.
+Bricks: left -0.3, right 2.1; top -0.3, bottom 0.3; front 0.0, back 2.0.
+```
 
 ### Intrinsic3D
 The Intrinsic3D approach takes the initial SDF volume (```fusion/volume_0.004.tsdf```) and selected keyframes (```fusion/keyframes.txt```) and jointly optimizes the scene geometry and appearance along with the involved image formation model:
