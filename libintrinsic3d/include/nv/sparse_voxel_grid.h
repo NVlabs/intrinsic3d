@@ -55,6 +55,7 @@ namespace nv
      */
 	struct Voxel
 	{
+        Voxel(){}
         float sdf = 0.0f;
         float weight = 0.0f;
         Vec3b color = Vec3b::Zero();
@@ -67,6 +68,7 @@ namespace nv
      */
 	struct VoxelSBR
 	{
+        VoxelSBR(){}
         double sdf = 0.0;
         float weight = 0.0f;
         Vec3b color = Vec3b::Zero();
