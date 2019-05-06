@@ -103,7 +103,8 @@ namespace nv
         ~SDFColorization();
 
         bool reset(SparseVoxelGrid<VoxelSBR>* grid);
-        bool reset(SparseVoxelGrid<VoxelSBR>* grid, const Vec4 &intrinsics, const Vec5 &dist_coeffs);
+        bool reset(SparseVoxelGrid<VoxelSBR>* grid, const Vec4 &intrinsics, const Vec5 &dist_coeffs,
+                   int w, int h);
         bool reset(SparseVoxelGrid<VoxelSBR>* grid, const Camera &cam);
 
         void setConfig(const Config& cfg);

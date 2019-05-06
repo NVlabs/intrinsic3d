@@ -209,7 +209,7 @@ namespace nv
             return false;
         if (cfg_.num_grid_levels <= 0 || cfg_.num_rgbd_levels <= 0)
             return false;
-		
+
         std::cout << "Intrinsic3D ..." << std::endl;
 
         // fill initial grid on coarsest hierarchy level
@@ -334,7 +334,7 @@ namespace nv
 
 
     bool Intrinsic3D::prepareRgbdLevel()
-    {
+    {       
         // collect shading cost data for current rgb-d pyramid level
         for (size_t i = 0; i < image_model_.rgbd_pyr.size(); ++i)
         {
@@ -384,7 +384,9 @@ namespace nv
 			return false;
 
 		// recompute voxel colors
-        sdf_colorization_.reset(opt_data_.grid, image_model_.intrinsics, image_model_.distortion_coeffs);
+        cv::Mat lum0 = image_model_.rgbd_pyr[0].intensity(0);
+        sdf_colorization_.reset(opt_data_.grid, image_model_.intrinsics,
+                                image_model_.distortion_coeffs, lum0.cols, lum0.rows);
 
 		// add views for collecting observations
         std::cout << "   collect observations ..." << std::endl;

@@ -121,8 +121,10 @@ namespace nv
             std::cout << "   iteration " << itr << " (grid level " << grid_lvl << ", pyramid level " << rgbd_lvl << ")" << std::endl;
 
             // update voxel colorization
+            cv::Mat lum0 = image_formation.rgbd_pyr[0].intensity(rgbd_lvl);
             Vec4 intrinsics_scaled = image_formation.intrinsics * pyramidLevelToScale(rgbd_lvl);
-            colorization.reset(data.grid, intrinsics_scaled, image_formation.distortion_coeffs);
+            colorization.reset(data.grid, intrinsics_scaled, image_formation.distortion_coeffs,
+                               lum0.cols, lum0.rows);
 
 			// compute cost term weights for current iteration
 			// volumetric regularizer

@@ -80,10 +80,13 @@ namespace nv
 	}
 
 
-    bool SDFColorization::reset(SparseVoxelGrid<VoxelSBR>* grid, const Vec4 &intrinsics, const Vec5 &dist_coeffs)
+    bool SDFColorization::reset(SparseVoxelGrid<VoxelSBR>* grid, const Vec4 &intrinsics,
+                                const Vec5 &dist_coeffs, int w, int h)
     {
         cam_.setIntrinsics(intrinsics);
         cam_.setDistortion(dist_coeffs.cast<float>());
+        cam_.setWidth(w);
+        cam_.setHeight(h);
         return reset(grid);
     }
 
