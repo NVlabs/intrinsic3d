@@ -68,7 +68,7 @@ namespace nv
         cv::Mat color_f;
         color.convertTo(color_f, CV_32FC3, 1.0 / 255.0);
 		cv::Mat lum;
-        cv::cvtColor(color_f, lum, CV_BGR2GRAY);
+        cv::cvtColor(color_f, lum, cv::COLOR_BGR2GRAY);
 		// create intensity image pyramid
         intensity_pyramid_ = createPyramid(num_levels, lum);
 
