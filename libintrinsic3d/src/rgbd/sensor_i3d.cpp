@@ -310,7 +310,7 @@ namespace nv
 			return cv::Mat();
 
 		// decode depth image
-        cv::Mat depth_in = cv::imdecode(cv::Mat(depth_images_[id]), CV_LOAD_IMAGE_UNCHANGED);
+        cv::Mat depth_in = cv::imdecode(cv::Mat(depth_images_[id]), cv::IMREAD_UNCHANGED);
 		cv::Mat depth;
         depth_in.convertTo(depth, CV_32FC1, (1.0 / 1000.0));
         return depth;
@@ -323,7 +323,7 @@ namespace nv
 			return cv::Mat();
 
 		// decode color image
-		return cv::imdecode(cv::Mat(color_images_[id]), CV_LOAD_IMAGE_UNCHANGED);
+		return cv::imdecode(cv::Mat(color_images_[id]), cv::IMREAD_UNCHANGED);
 	}
 
 

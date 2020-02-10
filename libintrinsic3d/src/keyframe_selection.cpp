@@ -224,7 +224,7 @@ namespace nv
 		if (color.channels() == 1)
 			gray = color;
 		else if (color.channels() == 3)
-			cv::cvtColor(color, gray, CV_BGR2GRAY);
+			cv::cvtColor(color, gray, cv::COLOR_BGR2GRAY);
 		else
 			return 0.0;
 
