@@ -72,12 +72,12 @@ mkdir third_party && cd third_party
 sudo apt install libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
 
 # download and extract Ceres Solver source code package
-wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz
-tar xvzf ceres-solver-1.14.0.tar.gz
-cd ceres-solver-1.14.0
+wget http://ceres-solver.org/ceres-solver-2.1.0.tar.gz
+tar xvzf ceres-solver-2.1.0.tar.gz
+cd ceres-solver-2.1.0
 
 # compile and install Ceres Solver
-mkdir build && cd build
+mkdir build-ceres && cd build-ceres
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/../../ -DCXX11=ON -DSUITESPARSE=ON -DCXSPARSE=ON -DEIGENSPARSE=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF
 make -j6
 make install

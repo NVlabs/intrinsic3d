@@ -335,7 +335,6 @@ namespace nv
 
 		// multi-threading
 		options.num_threads = 8;
-		options.num_linear_solver_threads = 8;
 
 		// solve problem
 		ceres::Solver::Summary summary;
