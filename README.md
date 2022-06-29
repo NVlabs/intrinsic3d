@@ -54,7 +54,7 @@ git clone https://github.com/NVlabs/intrinsic3d.git
 Building Intrinsic3D requires
 [CMake](https://cmake.org/download/),
 [Eigen](http://eigen.tuxfamily.org/),
-[OpenCV 3](https://opencv.org/releases.html),
+[OpenCV 4](https://opencv.org/releases.html),
 [Boost](http://www.boost.org/users/download/) and
 [Ceres Solver](http://ceres-solver.org/) (with [CXSparse](https://github.com/TheFrenchLeaf/CXSparse) on Windows)
 as third-party libraries.
