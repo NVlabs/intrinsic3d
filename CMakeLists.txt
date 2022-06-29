@@ -35,7 +35,7 @@
 # ------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9.0 FATAL_ERROR)
 PROJECT(Intrinsic3D C CXX)
 
 # ------------------------------------------------------------------------
@@ -71,18 +71,18 @@ FIND_PACKAGE(Eigen REQUIRED)
 INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})
 
 # OpenCV
-FIND_PACKAGE(OpenCV 3.0.0 COMPONENTS core highgui imgproc imgcodecs REQUIRED)
+FIND_PACKAGE(OpenCV 4.0.0 COMPONENTS core highgui imgproc imgcodecs REQUIRED)
 IF(OPENCV_CORE_FOUND)
     INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 ENDIF()
 
 # OpenMP
 FIND_PACKAGE(OpenMP)
-IF(OPENMP_FOUND)
+IF(OpenMP_CXX_FOUND)
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     IF(NOT WIN32)
-        SET(GOMP_LIBRARY gomp)
+        SET(GOMP_LIBRARY OpenMP::OpenMP_CXX)
     ENDIF()
 ENDIF()
 
