@@ -106,6 +106,8 @@ IF(WIN32 AND MSVC)
     # activate C++ exception handling in MSVC
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 ELSE()
+    # explicitly set CXX standard to fix compile issues with Ceres-2.x.x
+    SET(CMAKE_CXX_STANDARD 14)
     # flags for GCC etc
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -funroll-loops -pthread")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
